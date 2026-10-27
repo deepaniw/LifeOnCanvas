@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const gallery = document.querySelector(".gallery");
+	const gallery2 = document.querySelector(".gallery2");
     const lightbox = document.getElementById("lightbox");
     const lightboxImage = document.getElementById("lightbox-image");
     const closeButton = lightbox.querySelector(".lightbox-close");
@@ -43,9 +44,33 @@ document.addEventListener("DOMContentLoaded", function () {
             openLightbox(image);
         }
     });
+	
+	// Handle all current and future gallery images
+    gallery2.addEventListener("click", function (event) {
+        const image = event.target.closest("img");
+
+        if (image && gallery2.contains(image)) {
+            openLightbox(image);
+        }
+    });
 
     // Support keyboard navigation
     gallery.querySelectorAll("img").forEach(function (image) {
+        image.tabIndex = 0;
+        image.setAttribute("role", "button");
+        image.setAttribute("aria-label",
+            "Enlarge painting: " + image.alt);
+
+        image.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openLightbox(image);
+            }
+        });
+    });
+	
+	// Support keyboard navigation
+    gallery2.querySelectorAll("img").forEach(function (image) {
         image.tabIndex = 0;
         image.setAttribute("role", "button");
         image.setAttribute("aria-label",
