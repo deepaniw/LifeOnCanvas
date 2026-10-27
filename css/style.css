@@ -378,6 +378,13 @@ h3 {
     color: #716860;
 
     font-size: 13px;
+}.about-artist-image img{
+	max-width: 100%;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+	box-shadow: 25px 25px 0 #ded3c4;
 }
 
 
