@@ -1,35 +1,79 @@
 
-const lightbox = document.getElementById('lightbox');
-const lightboxImage = document.getElementById('lightbox-image');
-const closeButton = document.querySelector('.lightbox-close');
+document.addEventListener("DOMContentLoaded", function () {
 
-document.querySelectorAll('.lightbox-trigger').forEach(link => {
-  link.addEventListener('click', function (event) {
-    event.preventDefault();
+    const gallery = document.querySelector(".gallery");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightbox-image");
+    const closeButton = lightbox.querySelector(".lightbox-close");
 
-    const thumbnail = this.querySelector('img');
-    lightboxImage.src = this.href;
-    lightboxImage.alt = thumbnail.alt;
-    lightbox.hidden = false;
-    closeButton.focus();
-  });
-});
+    let previousFocus = null;
 
-function closeLightbox() {
-  lightbox.hidden = true;
-  lightboxImage.src = '';
-}
+    // Open the selected image
+    function openLightbox(image) {
+        previousFocus = image;
 
-closeButton.addEventListener('click', closeLightbox);
+        lightboxImage.src = image.src;
+        lightboxImage.alt = image.alt;
 
-lightbox.addEventListener('click', function (event) {
-  if (event.target === lightbox) {
-    closeLightbox();
-  }
-});
+        lightbox.hidden = false;
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
 
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape' && !lightbox.hidden) {
-    closeLightbox();
-  }
+        closeButton.focus();
+    }
+
+    // Close the overlay
+    function closeLightbox() {
+        lightbox.hidden = true;
+        lightbox.setAttribute("aria-hidden", "true");
+
+        lightboxImage.src = "";
+        document.body.style.overflow = "";
+
+        if (previousFocus) {
+            previousFocus.focus();
+        }
+    }
+
+    // Handle all current and future gallery images
+    gallery.addEventListener("click", function (event) {
+        const image = event.target.closest("img");
+
+        if (image && gallery.contains(image)) {
+            openLightbox(image);
+        }
+    });
+
+    // Support keyboard navigation
+    gallery.querySelectorAll("img").forEach(function (image) {
+        image.tabIndex = 0;
+        image.setAttribute("role", "button");
+        image.setAttribute("aria-label",
+            "Enlarge painting: " + image.alt);
+
+        image.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openLightbox(image);
+            }
+        });
+    });
+
+    // Close button
+    closeButton.addEventListener("click", closeLightbox);
+
+    // Close when clicking the dark background
+    lightbox.addEventListener("click", function (event) {
+        if (event.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    // Close with Escape
+    document.addEventListener("keydown", function (event) {
+        if (!lightbox.hidden && event.key === "Escape") {
+            closeLightbox();
+        }
+    });
+
 });
