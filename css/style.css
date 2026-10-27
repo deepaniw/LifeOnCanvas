@@ -322,6 +322,14 @@ h3 {
         repeat(5, 1fr);
 
     gap: 55px 25px;
+}.gallery2 {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 55px 25px;
 }
 
 
@@ -502,7 +510,9 @@ footer {
     }
 
 
-    .gallery {
+    .gallery,
+	.gallery2
+	{
 
         grid-template-columns:
             repeat(2, 1fr);
@@ -519,7 +529,8 @@ footer {
 
         height: 450px;
     }
-
+	
+	
 }
 
 
@@ -580,14 +591,14 @@ footer {
     }
 
 
-    .gallery {
+    .gallery,
+	.gallery2
+	{
 
         grid-template-columns: 1fr;
 
     }
-
-
-    .section-heading {
+	.section-heading {
 
         display: block;
 
@@ -617,7 +628,8 @@ footer {
   cursor: pointer;
 }
 /* All images inside the gallery are clickable */
-.gallery img {
+.gallery, 
+.gallery2 img {
     cursor: zoom-in;
 }
 
